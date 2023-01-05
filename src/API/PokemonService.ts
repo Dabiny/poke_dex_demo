@@ -140,6 +140,7 @@ interface infoInterface {
 }
 
 interface ResponseData {
+    results: any;
     id: number;
     name: string;
     color: {
@@ -156,18 +157,41 @@ interface ResponseData {
 
 // 한글로 검색가능하게 하는 fetch
 export const searchKoreanAPI = async () => {
-    let mp = new Map();
-    for (let i = 1; i <= 151; i++) {
-        const url = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
-        const res = axios.get<ResponseData>(url);
-        const nameData = await res.then((response) =>
-            response.data.names.map((v) => v.name)
-        );
-        const replaceName = nameData[2].replace(/[^가-힣]/g, "");
-        mp.set(replaceName, nameData[7].toLowerCase());
-    }
-    return mp;
+    const LIMIT = 300;
+    let isName = false;
 
+    let mp = new Map();
+    // for (let i = 1; i <= 151; i++) {
+    //     const url = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
+    //     const res = axios.get<ResponseData>(url);
+    //     const resData = await res.then((response) => response.data);
+    //     const nameData = await res.then((response) =>
+    //         response.data.names.map((v) => v.name)
+    //     );
+    //     const replaceName = nameData[2].replace(/[^가-힣]/g, "");
+    //     mp.set(replaceName, resData.name.toLowerCase());
+    // }
+    //  return mp;
+
+    function isTrue() {
+        isName = true;
+        return;
+    }
+    const urlArr = [];
+    for (let i = 1; i <= LIMIT; i++) {
+        const url = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
+        urlArr.push(axios.get(url));
+    }
+    const res = await axios.all(urlArr);
+
+    for (let i = 0; i < res.length; i++) {
+        const nameData = res[i].data.names.map((v: any) => v.name);
+        const replaceName = nameData[2].replace(/[^가-힣]/g, "");
+        // console.log(replaceName, res[i].data.name.toLowerCase());
+        mp.set(replaceName, res[i].data.name.toLowerCase());
+    }
+
+    return mp;
     // const url = `https://pokeapi.co/api/v2/pokemon?limit=151`;
     // const res = await axios.get(url);
     // const resData = res.data.results;

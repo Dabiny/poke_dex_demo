@@ -19,18 +19,19 @@ const PokemonSearch = () => {
         }
     }, [mp]);
 
-    // useEffect(() => {
-    //     (async () => {
-    //         const response = await searchKoreanAPI();
+    useEffect(() => {
+        // (async () => {
+        //     const response = await searchKoreanAPI();
 
-    //         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    //         [...response.keys()].map((k) => {
-    //             // console.log(k, response.get(k));
-    //             setMp(mp.set(k, response.get(k)));
-    //         });
-    //     })();
-        
-    // }, [mp]);
+        //     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        //     [...response.keys()].map((k) => {
+        //         // console.log(k, response.get(k));
+        //         setMp(mp.set(k, response.get(k)));
+        //     });
+        // })();
+        // console.log(searchKoreanAPI(value));
+
+    }, []);
 
     const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
@@ -42,6 +43,12 @@ const PokemonSearch = () => {
             const res = mp.get(value);
             setEnterValue(res as string);
         }
+
+
+        // console.log(searchKoreanAPI(value));
+        // if (searchKoreanAPI(value)) {
+            
+        // }
     };
 
     return (
