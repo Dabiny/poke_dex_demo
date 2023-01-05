@@ -163,7 +163,8 @@ export const searchKoreanAPI = async () => {
         const nameData = await res.then((response) =>
             response.data.names.map((v) => v.name)
         );
-        mp.set(nameData[2].replace(/[가-힣]/g), nameData[7].toLowerCase());
+        const replaceName = nameData[2].replace(/[^가-힣]/g, "");
+        mp.set(replaceName, nameData[7].toLowerCase());
     }
     return mp;
 
