@@ -58,7 +58,7 @@ const HomepageHeader = () => {
                             dreamworld Artwork
                         </option>
                         <option value={POKEMON_IMAGE_TYPE.FRONTDEFAULT}>
-                            fixel Artwork
+                            pixel Artwork
                         </option>
                     </Select>
                 </Nav>
