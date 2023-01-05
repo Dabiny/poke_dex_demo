@@ -50,7 +50,7 @@ const PokemonSearch = () => {
                 <SearchBar value={value} onChange={onHandleChange} placeholder='포켓몬의 이름을 입력해주세요' />
             </Section>
             <SearchResult>
-                {mp.has(enterValue) ? (
+                {enterValue ? (
                     <PokeCard name={enterValue} />
                 ) : (
                     <div>
