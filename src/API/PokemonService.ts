@@ -160,7 +160,7 @@ export const searchKoreanAPI = async () => {
     const LIMIT = 300;
     let isName = false;
 
-    let mp = new Map();
+    let mp: Map<string, string[]> = new Map();
     // for (let i = 1; i <= 151; i++) {
     //     const url = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
     //     const res = axios.get<ResponseData>(url);
@@ -173,10 +173,7 @@ export const searchKoreanAPI = async () => {
     // }
     //  return mp;
 
-    function isTrue() {
-        isName = true;
-        return;
-    }
+    // TODO: 검색 최적화 하기 전 -> 로딩시 151마리 포켓몬 약 7초 걸림. (해결)
     const urlArr = [];
     for (let i = 1; i <= LIMIT; i++) {
         const url = `https://pokeapi.co/api/v2/pokemon-species/${i}/`;
@@ -186,9 +183,32 @@ export const searchKoreanAPI = async () => {
 
     for (let i = 0; i < res.length; i++) {
         const nameData = res[i].data.names.map((v: any) => v.name);
-        const replaceName = nameData[2].replace(/[^가-힣]/g, "");
+        let replaceName = nameData[2];
         // console.log(replaceName, res[i].data.name.toLowerCase());
-        mp.set(replaceName, res[i].data.name.toLowerCase());
+
+        // TODO: 니드런암컷수컷 처리(해결)
+        if (nameData[2] === "니드런♂") {
+            // 니드런 수컷일경우
+            replaceName = "니드런";
+
+            if (mp.has(replaceName)) {
+                const arr = mp.get(replaceName) as [];
+                mp.set(replaceName, [...arr, "nidoran-m"]);
+            } else {
+                mp.set(replaceName, ["nidoran-m"]);
+            }
+        } else if (nameData[2] === "니드런♀") {
+            replaceName = "니드런";
+
+            if (mp.has(replaceName)) {
+                const arr = mp.get(replaceName) as [];
+                mp.set(replaceName, [...arr, "nidoran-f"]);
+            } else {
+                mp.set(replaceName, ["nidoran-f"]);
+            }
+        } else {
+            mp.set(replaceName, [res[i].data.name.toLowerCase()]);
+        }
     }
 
     return mp;

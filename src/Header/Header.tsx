@@ -32,7 +32,7 @@ const HomepageHeader = () => {
         );
     };
 
-    // TODO: select value값 넣어줘야함.
+    // TODO: select value값 넣어줘야함. (해결)
     return (
         <>
             <Header>
@@ -50,15 +50,15 @@ const HomepageHeader = () => {
                             <BiBookHeart />
                         </Link>
                     </Heart>
-                    <Select onChange={handleOnChange}>
-                        <option value={POKEMON_IMAGE_TYPE.FRONTDEFAULT}>
-                            default Artwork
+                    <Select value={typeImage} onChange={handleOnChange}>
+                        <option value={POKEMON_IMAGE_TYPE.OFFICIAL_ARTWORK}>
+                            offitial Artwork
                         </option>
                         <option value={POKEMON_IMAGE_TYPE.DREAM_WORLD}>
                             dreamworld Artwork
                         </option>
-                        <option value={POKEMON_IMAGE_TYPE.OFFICIAL_ARTWORK}>
-                            offitial Artwork
+                        <option value={POKEMON_IMAGE_TYPE.FRONTDEFAULT}>
+                            fixel Artwork
                         </option>
                     </Select>
                 </Nav>

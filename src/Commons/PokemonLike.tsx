@@ -31,7 +31,7 @@ const Like = styled.div`
 
     cursor: pointer;
     .heart {
-        font-size: 25px;
+        font-size: 30px;
         color: #ff3453;
     }
 

@@ -6,23 +6,22 @@ import PokeCard from "../List/PokeCard";
 
 const PokemonSearch = () => {
     const [value, setValue] = useState("");
-    const [enterValue, setEnterValue] = useState("");
-    const [mp, setMp] = useState<Map<string, string>>(new Map());
+    const [enterValue, setEnterValue] = useState('');
+    const [mp, setMp] = useState<Map<string, string[]>>(new Map());
 
     const request = useMemo(async () => {
-        if(mp.size === 0) {
-            const response = await searchKoreanAPI();
-            [...response.keys()].map((k) => {
-                // console.log(k, response.get(k));
-                setMp(mp.set(k, response.get(k)));
-            });
-        }
+        const response = await searchKoreanAPI();
+        
+        [...response.keys()].map((k) => {
+            // console.log(k, response.get(k));
+            const val = response.get(k)!;
+            setMp(mp.set(k, val));
+        });
     }, [mp]);
 
     useEffect(() => {
         // (async () => {
         //     const response = await searchKoreanAPI();
-
         //     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         //     [...response.keys()].map((k) => {
         //         // console.log(k, response.get(k));
@@ -30,7 +29,6 @@ const PokemonSearch = () => {
         //     });
         // })();
         // console.log(searchKoreanAPI(value));
-
     }, []);
 
     const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,30 +38,38 @@ const PokemonSearch = () => {
     const onHandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (mp.has(value)) {
-            const res = mp.get(value);
-            setEnterValue(res as string);
+            setEnterValue(value);
         }
-
-
-        // console.log(searchKoreanAPI(value));
-        // if (searchKoreanAPI(value)) {
-            
-        // }
+        else {
+            setEnterValue('');
+        }
     };
 
     return (
         <div>
             <Section onSubmit={onHandleSubmit}>
-                <SearchBar value={value} onChange={onHandleChange} placeholder='포켓몬의 이름을 입력해주세요' />
+                <SearchBar
+                    value={value}
+                    onChange={onHandleChange}
+                    placeholder="포켓몬의 이름을 입력해주세요"
+                />
             </Section>
             <SearchResult>
-                {enterValue ? (
-                    <PokeCard name={enterValue} />
-                ) : (
+                {
+                    mp.get(enterValue) ? 
+                    mp.get(enterValue)?.map((poke:string, idx:number) => {
+                    return (
+                        <PokeCard 
+                            key={`${poke}-${idx}`}
+                            name={poke}
+                            />
+                    )
+                }) : (
                     <div>
                         <p>🧐</p>
                     </div>
-                )}
+                )
+                }
             </SearchResult>
         </div>
     );
@@ -95,10 +101,18 @@ const SearchBar = styled.input`
         margin-top: 20px;
     }
 `;
-const SearchResult = styled.section`
+const SearchResult = styled.li`
+    list-style: none;
+    padding: 0;
+    margin: 30px 0 32px 0;
+
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 20px;
 
-    margin-top: 60px;
+    @media screen and (max-width: 500px) {
+        margin: 15px 0 17px 0;
+        gap: 13px;
+    }
 `;
-
