@@ -37,7 +37,7 @@ const PokemonSearch = () => {
     };
 
     const onHandleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+        // e.preventDefault();
         if (mp.has(value)) {
             const res = mp.get(value);
             setEnterValue(res as string);
