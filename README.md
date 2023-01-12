@@ -12,3 +12,5 @@
 😺 redux toolkit <br/>
 😺 openAPI 활용 <br/>
 😺 Intersection Observer API <br/>
+<br />
+[pokemon도감 PDF보기](https://drive.google.com/file/d/1NiTZrhaebKfUXKjTftBN75TeRmBOBgxv/view?usp=sharing)
